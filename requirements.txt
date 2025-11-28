@@ -1,13 +1,7 @@
 # Core dependencies for content-system pipeline
 requests>=2.28.0
 beautifulsoup4>=4.11.0
-
-# Optional: for video/audio processing
-# moviepy>=1.0.0
-# pydub>=0.25.0
-
-# Optional: for transcription (OpenAI API, etc.)
-# openai>=0.27.0
+pyyaml>=6.0.0
 
 # Development & Code Quality
 flake8>=6.0.0
@@ -15,6 +9,16 @@ black>=23.0.0
 ruff>=0.0.280
 pytest>=7.0.0
 
-# Task scheduling (if needed)
+# Optional: for transcription (OpenAI API)
+# openai>=0.27.0
+
+# Optional: for local transcription (requires ffmpeg on system)
+# openai-whisper>=20230314
+
+# Optional: for video/audio processing
+# moviepy>=1.0.0
+# pydub>=0.25.0
+
+# Task scheduling (optional, for advanced features)
 # schedule>=1.1.0
 # celery>=5.3.0
