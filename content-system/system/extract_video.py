@@ -11,11 +11,18 @@ import argparse
 import logging
 import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Optional
 
-from . import extract_audio as _audio_module
+# Handle both standalone and package imports
+try:
+    from . import extract_audio as _audio_module
+except ImportError:
+    # When run as a script, import as a module
+    sys.path.insert(0, str(Path(__file__).parent))
+    import extract_audio as _audio_module
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

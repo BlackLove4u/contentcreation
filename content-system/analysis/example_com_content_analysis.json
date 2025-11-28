@@ -2,22 +2,22 @@
   "filename": "example_com_content.txt",
   "pillar": "uncategorized",
   "tags": [
-    "needing",
-    "operations.learn",
-    "without",
-    "examples",
     "documentation",
     "permission",
-    "domain"
+    "needing",
+    "without",
+    "examples",
+    "domain",
+    "operations.learn"
   ],
   "trend_scores": {
-    "needing": 1.0,
-    "operations.learn": 1.0,
-    "without": 1.0,
-    "examples": 1.0,
     "documentation": 1.0,
     "permission": 1.0,
-    "domain": 1.0
+    "needing": 1.0,
+    "without": 1.0,
+    "examples": 1.0,
+    "domain": 1.0,
+    "operations.learn": 1.0
   },
   "length": 122
 }

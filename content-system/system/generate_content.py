@@ -1,14 +1,19 @@
 """generate_content.py
 Generate multi-platform content (blog, Instagram, YouTube, etc.) from analysis results and config.
+
+Adds simple YAML front matter for blog posts and includes platform-specific formatting.
 """
 
 import json
 from pathlib import Path
 import yaml
+from datetime import datetime, timezone
+import re
 
 ANALYSIS_DIR = Path(__file__).parent.parent / "analysis"
 CONTENT_DIR = Path(__file__).parent.parent / "content"
 CONFIG_PATH = Path(__file__).parent.parent / "config.yaml"
+
 
 def load_config():
     if CONFIG_PATH.exists():
@@ -16,33 +21,63 @@ def load_config():
             return yaml.safe_load(f)
     return {}
 
-def make_blog(title: str, bullets: list, brand=None) -> str:
-    intro = f"# {title}\n\n"
+
+def slugify(s: str) -> str:
+    s = s.lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    s = s.strip("-")
+    return s or "post"
+
+
+def front_matter(title: str, tags: list, pillar: str, brand: dict | None = None) -> str:
+    meta = {
+        "title": title,
+        "date": datetime.now(timezone.utc).isoformat() + "Z",
+        "tags": tags,
+        "pillar": pillar,
+    }
     if brand:
-        intro += f"*A {brand['name']} original*\n\n"
-    for b in bullets:
-        intro += f"- {b}\n"
-    return intro
+        meta["brand"] = brand.get("name")
+    return "---\n" + yaml.safe_dump(meta, sort_keys=False) + "---\n\n"
+
+
+def make_blog(title: str, bullets: list, tags: list, pillar: str, brand=None) -> str:
+    body = front_matter(title, tags, pillar, brand)
+    body += f"# {title}\n\n"
+    if brand:
+        body += f"*A {brand['name']} original*\n\n"
+    if bullets:
+        body += "\n".join([f"- {b}" for b in bullets]) + "\n"
+    else:
+        body += "Write your article here.\n"
+    return body
+
 
 def make_instagram_caption(tags: list, pillar: str, brand=None) -> str:
     base = f"{pillar.title()} | " if pillar else ""
-    caption = base + " ".join([f"#{t}" for t in tags[:5]])
+    caption = base + " ".join([f"#{t}" for t in tags[:10]])
+    caption += "\n\n"
+    caption += "Short caption text goes here."
     if brand:
         caption += f"\nFollow @{brand['name'].replace(' ', '').lower()} for more!"
     return caption
 
+
 def make_youtube_desc(tags: list, brand=None) -> str:
-    desc = "This video covers: " + ", ".join(tags[:7])
+    desc = "This video covers: " + ", ".join(tags[:10])
+    desc += "\n\nMore resources and links in the description."
     if brand:
         desc += f"\nSubscribe for more {brand['name']} content!"
     return desc
 
+
 def generate_for_file(analysis, brand):
     title = analysis['filename'].replace('_', ' ').replace('.txt', '').title()
-    tags = analysis['tags']
-    pillar = analysis['pillar']
+    tags = analysis.get('tags', [])
+    pillar = analysis.get('pillar', '')
+    bullets = tags[:7]
     # Blog
-    blog = make_blog(title, tags[:7], brand)
+    blog = make_blog(title, bullets, tags, pillar, brand)
     # Instagram
     insta = make_instagram_caption(tags, pillar, brand)
     # YouTube
@@ -53,13 +88,22 @@ def generate_for_file(analysis, brand):
         "youtube": yt,
     }
 
+
 def save_content(content, out_dir, filename):
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
+    out_dir = Path(out_dir)
     for platform, text in content.items():
-        out_path = Path(out_dir) / platform / filename
+        if platform == "blog":
+            out_path = out_dir / "blog" / filename
+        elif platform == "instagram":
+            out_path = out_dir / "instagram" / filename
+        elif platform == "youtube":
+            out_path = out_dir / "youtube" / filename
+        else:
+            out_path = out_dir / platform / filename
         out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(text)
+
 
 def main():
     brand = load_config().get("brand", {})
@@ -67,8 +111,10 @@ def main():
         analyses = json.load(f)
     for analysis in analyses:
         content = generate_for_file(analysis, brand)
-        save_content(content, CONTENT_DIR, analysis['filename'].replace('.txt', '.md'))
+        filename = analysis['filename'].replace('.txt', '.md')
+        save_content(content, CONTENT_DIR, filename)
         print(f"✓ Generated content for {analysis['filename']}")
+
 
 if __name__ == "__main__":
     main()

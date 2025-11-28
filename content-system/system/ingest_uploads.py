@@ -3,6 +3,8 @@
 import os
 import argparse
 import logging
+from datetime import datetime, timezone
+import json
 from pathlib import Path
 import subprocess
 
@@ -71,15 +73,49 @@ def main():
     parser = argparse.ArgumentParser(description="Ingest uploads folder and route files to extractors")
     parser.add_argument("--dry-run", action="store_true", help="Show actions without writing files")
     parser.add_argument("--verbose", action="store_true", help="Verbose logging")
+    parser.add_argument("--commit", action="store_true", help="Archive processed uploads to input/processed")
     args = parser.parse_args()
 
     level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
     logger = logging.getLogger("ingest")
 
+    processed_root = UPLOADS_DIR.parent / "processed"
+    processed_root.mkdir(parents=True, exist_ok=True)
+
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    run_dir = processed_root / run_id
+    # Only create run_dir when commit is requested and not a dry-run
+    if args.commit and not args.dry_run:
+        run_dir.mkdir(parents=True, exist_ok=True)
+
+    processed_entries = []
+
     for file in UPLOADS_DIR.iterdir():
         if file.is_file():
             process_file(file, dry_run=args.dry_run, logger=logger)
+            if args.commit and not args.dry_run:
+                target = run_dir / file.name
+                try:
+                    file.rename(target)
+                    logger.info("Moved %s -> %s", file.name, target)
+                    processed_entries.append({
+                        "original_name": file.name,
+                        "stored_path": str(target),
+                        "processed_at": datetime.now(timezone.utc).isoformat() + "Z",
+                    })
+                except Exception as e:
+                    logger.error("Failed to move %s to processed: %s", file.name, e)
+
+    # Write metadata for this run if we committed
+    if args.commit and not args.dry_run and processed_entries:
+        meta_path = run_dir / "processed_meta.json"
+        try:
+            with open(meta_path, "w", encoding="utf-8") as mf:
+                json.dump({"run_id": run_id, "entries": processed_entries}, mf, indent=2)
+            logger.info("Wrote run metadata: %s", meta_path)
+        except Exception as e:
+            logger.error("Failed to write run metadata %s: %s", meta_path, e)
 
 
 if __name__ == "__main__":

@@ -2,24 +2,24 @@
   "filename": "sample_text.txt",
   "pillar": "uncategorized",
   "tags": [
-    "repeated",
-    "sample",
-    "generate",
     "several",
-    "analysis",
-    "contains",
     "ingestion",
-    "testing"
+    "repeated",
+    "generate",
+    "contains",
+    "sample",
+    "testing",
+    "analysis"
   ],
   "trend_scores": {
-    "repeated": 1.0,
-    "sample": 1.0,
-    "generate": 1.0,
     "several": 1.0,
-    "analysis": 1.0,
-    "contains": 1.0,
     "ingestion": 1.0,
-    "testing": 1.0
+    "repeated": 1.0,
+    "generate": 1.0,
+    "contains": 1.0,
+    "sample": 1.0,
+    "testing": 1.0,
+    "analysis": 1.0
   },
   "length": 115
 }
