@@ -1,6 +1,7 @@
 """scheduler_prep.py
 Prepare content artifacts for scheduler ingestion.
 """
+
 import os
 
 
@@ -13,5 +14,7 @@ def prepare_for_instagram(post_text: str, image_path: str, out_dir: str):
 
 
 if __name__ == "__main__":
-    p = prepare_for_instagram("Caption here", "image.jpg", "../scheduler_ready/instagram/")
+    p = prepare_for_instagram(
+        "Caption here", "image.jpg", "../scheduler_ready/instagram/"
+    )
     print(p)

@@ -1,6 +1,7 @@
 """analyze.py
 Simple analysis stubs: tags, trend scoring.
 """
+
 import json
 from typing import List
 
@@ -22,7 +23,10 @@ def save_json(obj, path):
 
 
 if __name__ == "__main__":
-    sample = "This sample contains datadriven, trending, exampleword content for analysis."
+    sample = (
+        "This sample contains datadriven, trending, "
+        "exampleword content for analysis."
+    )
     tags = extract_tags(sample)
     print(tags)
     print(score_trend(tags))

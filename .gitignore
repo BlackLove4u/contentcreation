@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project-specific
+content-system/input/raw_videos/*
+content-system/input/raw_pdfs/*
+content-system/extracted/**/*
+content-system/analysis/approved/*
+content-system/content/**/*
+content-system/scheduler_ready/**/*
+
+# But keep the directories themselves
+!content-system/input/raw_videos/.gitkeep
+!content-system/input/raw_pdfs/.gitkeep
+!content-system/extracted/text/.gitkeep
+!content-system/extracted/transcripts/.gitkeep
+!content-system/extracted/cleaned/.gitkeep
+!content-system/analysis/approved/.gitkeep
+!content-system/content/**/.gitkeep
+!content-system/scheduler_ready/**/.gitkeep
