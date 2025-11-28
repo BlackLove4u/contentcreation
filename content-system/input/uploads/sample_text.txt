@@ -1,0 +1,2 @@
+This is a sample text file for ingestion testing.
+It contains several repeated words to generate tags and analysis.

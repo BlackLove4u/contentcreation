@@ -1,0 +1,30 @@
+# Brand and system configuration for Phoenix Rise
+brand:
+  name: Phoenix Rise
+  mission: >
+    Empower survivors, rebuild confidence, spark healing, and guide people toward purpose, strength, and independence.
+  values:
+    - Empowerment
+    - Integrity
+    - Compassion
+    - Growth
+    - Community
+  pillars:
+    - Motivation & Healing Stories
+    - Educational / Life Lessons
+    - Advocacy & Empowerment for Victims
+    - Lifestyle & Behind-the-Scenes Journey
+    - Creative Growth & Entrepreneurship
+  tone: Honest, heartfelt, uplifting, practical, educational
+platforms:
+  - Instagram
+  - YouTube
+  - Blog
+  - Podcast
+posting:
+  frequency: 3x/week
+  best_times:
+    Instagram: "12:00, 18:00"
+    YouTube: "17:00"
+    Blog: "09:00"
+    Podcast: "10:00"
