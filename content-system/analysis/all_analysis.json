@@ -1,0 +1,50 @@
+[
+  {
+    "filename": "example_com_content.txt",
+    "pillar": "uncategorized",
+    "tags": [
+      "needing",
+      "operations.learn",
+      "without",
+      "examples",
+      "documentation",
+      "permission",
+      "domain"
+    ],
+    "trend_scores": {
+      "needing": 1.0,
+      "operations.learn": 1.0,
+      "without": 1.0,
+      "examples": 1.0,
+      "documentation": 1.0,
+      "permission": 1.0,
+      "domain": 1.0
+    },
+    "length": 122
+  },
+  {
+    "filename": "sample_text.txt",
+    "pillar": "uncategorized",
+    "tags": [
+      "repeated",
+      "sample",
+      "generate",
+      "several",
+      "analysis",
+      "contains",
+      "ingestion",
+      "testing"
+    ],
+    "trend_scores": {
+      "repeated": 1.0,
+      "sample": 1.0,
+      "generate": 1.0,
+      "several": 1.0,
+      "analysis": 1.0,
+      "contains": 1.0,
+      "ingestion": 1.0,
+      "testing": 1.0
+    },
+    "length": 115
+  }
+]
